@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.+'
+    }
+}
+
+apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.library'
+
+repositories {
+    mavenCentral()
+}
+
 
 android {
     compileSdkVersion 19
@@ -7,8 +22,8 @@ android {
         applicationId 'com.devpaul.analogsticklib'
         minSdkVersion 11
         targetSdkVersion 19
-        versionCode 1
-        versionName '1.0'
+        versionCode Integer.parseInt(project.VERSION_CODE)
+        versionName  project.VERSION_NAME
     }
     buildTypes {
         release {
@@ -22,5 +37,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:19.+'
 }
+
+apply from: '../maven_push.gradle'
