@@ -80,11 +80,12 @@ Add ability for haptic feedback.
 Upload demo app to google play
 
 <h2>Developed By</h2>
-**Paul Tsouchlos**
+**Paul T**
 
 <h2>License</h2>
 
-Copyright 2014 Paul Tsouchlos
+Copyright 2014 Paul T
+
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
