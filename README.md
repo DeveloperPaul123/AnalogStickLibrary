@@ -10,6 +10,11 @@ This library is an easy way to implement an analog stick for on screen controls 
 This library is available on Maven so simply add the following line in your build.gradle file. 
 
 ````java
+
+repositories {
+  mavenCentral() 
+}
+
 dependencies {
 
   compile 'com.github.developerpaul123.analogsticklibrary:library:1.0@aar'
@@ -56,7 +61,7 @@ If you want a "power" reading or some scaled value do the following as well.
 
             @Override
             public void onAnalogMovedScaledY(float scaledY) {
-                do something with the scaled y value. 
+               //do something with the scaled y value. 
             }
 
             @Override
@@ -66,7 +71,11 @@ If you want a "power" reading or some scaled value do the following as well.
 
             @Override
             public void onAnalogMovedGetQuadrant(Quadrant quadrant) {
-                //do something with the quadrant. 
+              //do something with the quadrant. 
             }
         });
 ````
+<h2>Todo</h2>
+Add ability for haptic feedback.
+Upload demo app to google play
+
