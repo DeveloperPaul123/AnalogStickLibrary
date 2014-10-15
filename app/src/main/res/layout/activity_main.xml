@@ -20,7 +20,7 @@
         android:id="@+id/analog_stick"
         app:outerCircleColor="@android:color/holo_blue_dark"
         app:centerStickColor="@android:color/holo_orange_dark"
-        android:layout_width="200dip"
-        android:layout_height="200dip" />
+        android:layout_width="250dip"
+        android:layout_height="250dip" />
 
 </RelativeLayout>

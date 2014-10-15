@@ -7,7 +7,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -18,37 +17,91 @@ import android.view.View;
  */
 public class AnalogStick extends View {
 
+    public static final int DEFAULT_DIAMETER = 200;
+    /**
+     * Boolean for if the inner circle is touched.
+     */
     private boolean innerTouched;
 
-    public enum DirectionX {NULL, LEFT, RIGHT};
-    public enum DirectionY {NULL, UP, DOWN};
-
+    /**
+     * Outside circle for analog stick paint.
+     */
     private Paint outerPaint;
+
+    /**
+     * Inner circle paint for the analog stick.
+     */
     private Paint innerPaint;
 
+    /**
+     * Inner color.
+     */
     private int innerColor;
+
+    /**
+     * Outer color.
+     */
     private int outerColor;
 
+    /**
+     * Center x coordinate of analog stick.
+     */
     private float cx;
+
+    /**
+     * Center y coordinate of analog stick.
+     */
     private float cy;
 
+    /**
+     * Analog move listener.
+     */
     private OnAnalogMoveListener listner;
 
-    private DirectionX curXDirection;
-    private DirectionY curYDirection;
-
+    /**
+     * The inner radius of the view.
+     */
     int innerRadius;
+
+    /**
+     * The outer radius of the view.
+     */
     int outerRadius;
+
+    /**
+     * Maximum radius of movement.
+     */
     int maxRadius;
 
+    /**
+     * Current y coordinate of the center of the inner circle.
+     */
     private float innerY;
+
+    /**
+     * Current x coordinate of the center of the inner circle.
+     */
     private float innerX;
 
+    /**
+     * Animator for innerY
+     */
     private ObjectAnimator yAnimator;
+
+    /**
+     * Animator for innerX
+     */
     private ObjectAnimator xAnimator;
 
+    /**
+     * Current quadrant for the view.
+     */
     private Quadrant curQuadrant;
 
+    /**
+     * Returns the max y value set for this view.
+     * @return a float of the max value.
+     */
     public float getMaxYValue() {
         return maxYValue;
     }
@@ -76,13 +129,28 @@ public class AnalogStick extends View {
         this.maxXValue = maxXValue;
     }
 
+    /**
+     * Max y value.
+     */
     private float maxYValue;
+
+    /**
+     * Max x value.
+     */
     private float maxXValue;
 
+    /**
+     * Returns innerY coordinate
+     * @return the inner circles center innerY coordinate.
+     */
     public float getInnerY() {
         return innerY;
     }
 
+    /**
+     * Sets the innery value for the view. Used by the object animator.
+     * @param innerY the innerY value to set.
+     */
     public void setInnerY(float innerY) {
         this.innerY = innerY;
         if(listner != null) {
@@ -99,9 +167,18 @@ public class AnalogStick extends View {
         invalidate();
     }
 
+    /**
+     * Returns the inner X coordinate.
+     * @return
+     */
     public float getInnerX() {
         return this.innerX;
     }
+
+    /**
+     * Sets the inner X coordinate. Used by the x object animator.
+     * @param innerX the new inner X coordinate.
+     */
     public void setInnerX(float innerX) {
         this.innerX = innerX;
         if(listner !=  null) {
@@ -118,21 +195,41 @@ public class AnalogStick extends View {
         invalidate();
     }
 
+    /**
+     * Constructor for an analog stick. Make sure the width and height are the same.
+     * @param context the context passed in to this view.
+     * @param attrs Attribute set, needed for xml attributes.
+     * @param defStyleAttr optional style.
+     */
     public AnalogStick(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initialize(context, attrs);
     }
 
+    /**
+     * Constructor for an analog stick.
+     * @param context the context passed in to this view.
+     * @param attrs an AttributeSet for reading the xml attributes.
+     */
     public AnalogStick(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize(context, attrs);
     }
 
+    /**
+     * Simple Constructor
+     * @param context the context passed in to this view.
+     */
     public AnalogStick(Context context) {
         super(context);
         initialize(context, null);
     }
 
+    /**
+     * Initializes various parts of the view.
+     * @param context the context passed in to this view.
+     * @param attrs an AttributeSet for reading the xml attributes.
+     */
     private void initialize(Context context, AttributeSet attrs) {
         //initialize everything
         //animator
@@ -142,13 +239,14 @@ public class AnalogStick extends View {
         //set focus.
         setFocusable(true);
         if(attrs != null) {
+            //read the attributes.
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AnalogStick);
             innerColor = typedArray.getColor(R.styleable.AnalogStick_centerStickColor, getResources().getColor(android.R.color.holo_blue_bright));
             outerColor = typedArray.getColor(R.styleable.AnalogStick_outerCircleColor, getResources().getColor(android.R.color.darker_gray));
 
         }
 
-        //initialize the paint.
+        //initialize the paints.
         outerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         outerPaint.setAntiAlias(false);
         outerPaint.setStyle(Paint.Style.FILL);
@@ -159,9 +257,10 @@ public class AnalogStick extends View {
         innerPaint.setStyle(Paint.Style.FILL);
         innerPaint.setColor(innerColor);
 
+        //initialize the max values.
         maxXValue = 0;
         maxYValue = 0;
-
+        //initialize touch boolean.
         innerTouched = false;
 
     }
@@ -173,13 +272,14 @@ public class AnalogStick extends View {
         canvas.drawCircle(cx, cy, outerRadius, outerPaint);
         //inner circle
         canvas.drawCircle(innerX, innerY, innerRadius, innerPaint);
-
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
+        //the action
         int action = event.getAction();
+        //touch points.
         int touchX = (int) event.getX();
         int touchY = (int) event.getY();
 
@@ -192,6 +292,7 @@ public class AnalogStick extends View {
                     }
                 }
                 break;
+
             case MotionEvent.ACTION_MOVE:
 
                 if(innerTouched) {
@@ -201,22 +302,27 @@ public class AnalogStick extends View {
                         xAnimator.cancel();
                     }
                     //get the angle.
-                    float vecx = innerX - cx;
+                    float vecx = touchX - cx;
                     //y is positive down
-                    float vecy = cy - innerY;
+                    float vecy = touchY - cy;
                     float angle = getAngle(vecx, vecy);
-
                     //all movement of the analog stick center should be within the radius of the larger
                     //circle minus the radius of the analog stick.
-                    float magnitude = getVectorMagnitude(touchX - maxRadius, touchY - maxRadius);
-                    if(magnitude <= maxRadius) {
-                        innerX = touchX;
-                        innerY = touchY;
-                    }
-                    else if(magnitude > maxRadius) {
+                    int magnitude = getVectorMagnitude(touchX - (int) cx, touchY - (int) cy);
+                    if(magnitude >= maxRadius) {
                         //inner stick is too far away so we need to fix that.
                         innerX = (float) Math.cos(Math.toRadians(angle))  * maxRadius;
                         innerY = (float) Math.sin(Math.toRadians(angle)) * maxRadius;
+                        innerX += cx;
+                        innerY += cy;
+                    } else if(magnitude < maxRadius) {
+                        //inner stick isn't too far away.
+                        innerX = touchX;
+                        innerY = touchY;
+                    } else {
+                        //not really needed but oh well.
+                        innerX = touchX;
+                        innerY = touchY;
                     }
 
                     //handle scaled events.
@@ -239,13 +345,32 @@ public class AnalogStick extends View {
                             listner.onAnalogMovedScaledY(maxYValue * ratio);
                         }
 
-                        listner.onAnalogMove(cx, innerY);
+                        //notify the listener of the raw movements.
+                        listner.onAnalogMove(innerX, innerY);
+                        //notify the listener of the angle.
+                        listner.onAnalogMovedGetAngle(angle);
+                        //notify the listener of the quadrant.
+                        if(angle >=0 && angle <=90) {
+                            curQuadrant = Quadrant.TOP_RIGHT;
+                        } else if (angle > 90 && angle <= 180) {
+                            curQuadrant = Quadrant.TOP_LEFT;
+                        } else if(angle > 180 && angle <= 270) {
+                            curQuadrant = Quadrant.BOTTOM_LEFT;
+                        } else {
+                            curQuadrant = Quadrant.BOTTOM_RIGHT;
+                        }
+                        if(curQuadrant != null) {
+                            listner.onAnalogMovedGetQuadrant(curQuadrant);
+                        }
                     }
+                    //invalidate the view.
                     invalidate();
 
                 }
                 break;
+
             case MotionEvent.ACTION_UP:
+                //let go of the stick so return it to the center.
                 returnSticktoCenter();
                 innerTouched = false;
                 break;
@@ -253,43 +378,60 @@ public class AnalogStick extends View {
         return true;
     }
 
-    private float getVectorMagnitude(int vecx, int vecy) {
-        return (float) Math.sqrt(Math.pow(vecx, 2) + Math.pow(vecy, 2));
+    /**
+     * Returns the magnitude of a vector
+     * @param vecx the x component of the vector.
+     * @param vecy the y component of the vector
+     * @return the value of the magnitude of the vector.
+     */
+    private int getVectorMagnitude(int vecx, int vecy) {
+        return (int) Math.sqrt(Math.pow(vecx, 2) + Math.pow(vecy, 2));
     }
 
+    /**
+     * Gets the angle between two points with respect to the x axis. A positive angle is counter
+     * clockwise from the x axis.
+     * @param touchX the touch x coordinate.
+     * @param touchY the touch y coordinate.
+     * @return the angle in degrees.
+     */
     public float getAngle(float touchX, float touchY) {
-
+        //use atan2, make sure its (y, x) not (x, y)
         float angle = (float) Math.toDegrees(Math.atan2(touchY, touchX));
+        //scale the value so that we never get negative values.
         if(angle < 0) {
             angle += 360;
         }
-        Log.d("ANALOG", "Angle: " + angle);
         return angle;
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        cx = (int) getWidth() / 2;
-        cy = (int) getWidth() / 2;
+        cx = getWidth() / 2;
+        cy = getWidth() / 2;
         innerY = cy;
         innerX = cx;
         int d = Math.min(w, h);
         innerRadius = (int) (d / 2 * 0.25);
         outerRadius = (int) (d / 2 * 0.75);
 
-        maxRadius = outerRadius-innerRadius;
+        maxRadius = outerRadius- (int) (innerRadius * 0.65);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int d = Math.min(measure(widthMeasureSpec), measure(heightMeasureSpec));
-
         setMeasuredDimension(d, d);
     }
 
+    /**
+     * Measures the view given a measure spec.
+     * @param measureSpec the measure spec from onMeasure.
+     * @return the measurement.
+     */
     private int measure(int measureSpec) {
-        int result = 0;
+        int measurement = 0;
 
         // Decode the measurement specifications.
         int specMode = MeasureSpec.getMode(measureSpec);
@@ -297,13 +439,13 @@ public class AnalogStick extends View {
 
         if (specMode == MeasureSpec.UNSPECIFIED) {
             // Return a default size of 200 if no bounds are specified.
-            result = 200;
+            measurement = DEFAULT_DIAMETER;
         } else {
             // As you want to fill the available space
             // always return the full available bounds.
-            result = specSize;
+            measurement = specSize;
         }
-        return result;
+        return measurement;
     }
 
     /**
