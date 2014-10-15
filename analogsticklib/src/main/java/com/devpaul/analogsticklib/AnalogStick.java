@@ -330,8 +330,8 @@ public class AnalogStick extends View {
                         if(maxXValue != 0) {
                            //max x valule has been set so scale the movements.
                            //get the max distance you can move in the x axis.
-                            float maxX = outerRadius - innerRadius;
-                            float curX = touchX - cx;
+                            float maxX = maxRadius;
+                            float curX = innerX - cx;
                             float ratio = curX/maxX;
                             listner.onAnalogMovedScaledX(maxXValue * ratio);
 
@@ -339,7 +339,7 @@ public class AnalogStick extends View {
                         if(maxYValue != 0) {
                             //max y value has been set so scale the movements to this value.
                             //get max distance
-                            float maxY = outerRadius - innerRadius;
+                            float maxY = maxRadius;
                             float curY = cy - innerY; //remember y is positive down.
                             float ratio = curY/maxY;
                             listner.onAnalogMovedScaledY(maxYValue * ratio);
@@ -351,13 +351,13 @@ public class AnalogStick extends View {
                         listner.onAnalogMovedGetAngle(angle);
                         //notify the listener of the quadrant.
                         if(angle >=0 && angle <=90) {
-                            curQuadrant = Quadrant.TOP_RIGHT;
-                        } else if (angle > 90 && angle <= 180) {
-                            curQuadrant = Quadrant.TOP_LEFT;
-                        } else if(angle > 180 && angle <= 270) {
-                            curQuadrant = Quadrant.BOTTOM_LEFT;
-                        } else {
                             curQuadrant = Quadrant.BOTTOM_RIGHT;
+                        } else if (angle > 90 && angle <= 180) {
+                            curQuadrant = Quadrant.BOTTOM_LEFT;
+                        } else if(angle > 180 && angle <= 270) {
+                            curQuadrant = Quadrant.TOP_LEFT;
+                        } else {
+                            curQuadrant = Quadrant.TOP_RIGHT;
                         }
                         if(curQuadrant != null) {
                             listner.onAnalogMovedGetQuadrant(curQuadrant);
@@ -389,7 +389,7 @@ public class AnalogStick extends View {
     }
 
     /**
-     * Gets the angle between two points with respect to the x axis. A positive angle is counter
+     * Gets the angle between two points with respect to the x axis. A positive angle is
      * clockwise from the x axis.
      * @param touchX the touch x coordinate.
      * @param touchY the touch y coordinate.
