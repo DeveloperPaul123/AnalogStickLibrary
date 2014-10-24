@@ -1,6 +1,8 @@
 AnalogStickLibrary
 ==================
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-AnalogStickLibrary-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1049)
+
 A simple library that provides an anlog stick to use for on screen controls.
 
 
