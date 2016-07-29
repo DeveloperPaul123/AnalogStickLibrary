@@ -110,7 +110,7 @@ public class AnalogStick extends View {
      * This will scale all the movement of the stick so that when the stick is all the way up you
      * get +maxYValue returned in OnAnalogStickMovedListener and -maxYValue when it's all the way
      * down
-     * @param maxYValue
+     * @param maxYValue the maximum y value.
      */
     public void setMaxYValue(float maxYValue) {
         this.maxYValue = maxYValue;
@@ -123,7 +123,7 @@ public class AnalogStick extends View {
     /**
      * This will scale the movement of the analog stick in the x direction so that +maxXValue is
      * returned when all the way to the right and -maxXValue all the way to the left.
-     * @param maxXValue
+     * @param maxXValue the maximum x value.
      */
     public void setMaxXValue(float maxXValue) {
         this.maxXValue = maxXValue;
@@ -169,7 +169,7 @@ public class AnalogStick extends View {
 
     /**
      * Returns the inner X coordinate.
-     * @return
+     * @return float the inner x coordinate.
      */
     public float getInnerX() {
         return this.innerX;
