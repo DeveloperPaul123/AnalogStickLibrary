@@ -2,6 +2,7 @@ AnalogStickLibrary
 ==================
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-AnalogStickLibrary-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1049)
+[![](https://jitpack.io/v/DeveloperPaul123/AnalogStickLibrary.svg)](https://jitpack.io/#DeveloperPaul123/AnalogStickLibrary)
 
 A simple library that provides an anlog stick to use for on screen controls.
 
@@ -12,16 +13,13 @@ This library is an easy way to implement an analog stick for on screen controls 
 This library is available on Maven so simply add the following line in your build.gradle file. 
 
 ````java
-
 repositories {
-  mavenCentral() 
+  maven {url "https://jitpack.io"}
 }
 
 dependencies {
-
-  compile 'com.github.developerpaul123.analogsticklibrary:library:1.0@aar'
-  
-  }
+  compile 'com.github.DeveloperPaul123:AnalogStickLibrary:1.0.0'
+}
   ````
 <h2> Usage </h2>
 
