@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '20.0.0'
+    buildToolsVersion '22.0.1'
     defaultConfig {
         applicationId 'com.devpaul.analogstick'
         minSdkVersion 14
@@ -22,5 +22,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':analogsticklib')
+    //compile project(':analogsticklib')
+    compile 'com.github.DeveloperPaul123:AnalogStickLibrary:1.0.0'
 }
